@@ -5,9 +5,11 @@ import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Ellipse2D;
 
 import javax.swing.*;
 
+import com.dale.connect6.data.MyData;
 import com.dale.connect6.panels.ControlPanel;
 import com.dale.connect6.panels.GoBoard;
 
@@ -61,13 +63,30 @@ public class MainFrame extends JFrame {
 		});
 		
 		controlPanel.getRestartButton().addActionListener(new ActionListener() {
-
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				MyData.clickedPoint.clear();
+				controlPanel.setNumberOfDisabledPoint(0);
+				controlPanel.getNumberOfDisabledPointTextField().setText("");
 				
+				goBoard.setBlackTurnFirst(false);
+				goBoard.setFirstClick(false);
+				goBoard.setBlockCount(0);
+				goBoard.setBlockFilled(false);
+				goBoard.setBlackTurnSecond(false);
+				goBoard.setBlackTurnFirst(false);
+				goBoard.setWhiteTurnSecond(false);
+				goBoard.setWhiteTurnFirst(false);
+				goBoard.setCurrentColor(Color.RED);
+				goBoard.setGameMatrix(new int[19][19]);
+				goBoard.setUsedEllipse(new  Ellipse2D.Double[19][19]);
+				goBoard.setEllipse(new Ellipse2D.Double[19][19]);
+				goBoard.setStart(false);
+				
+				controlPanel.getStartButton().setEnabled(false);
+				
+				goBoard.repaint();
 			}
-			
 		});
 		this.add(controlPanel);
 		this.add(goBoard);

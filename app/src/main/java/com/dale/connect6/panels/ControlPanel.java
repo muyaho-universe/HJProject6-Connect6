@@ -94,4 +94,12 @@ public class ControlPanel extends JPanel {
 	public void setRestartButton(RoundButton restartButton) {
 		this.restartButton = restartButton;
 	}
+
+	public JTextField getNumberOfDisabledPointTextField() {
+		return numberOfDisabledPointTextField;
+	}
+
+	public void setNumberOfDisabledPointTextField(JTextField numberOfDisabledPointTextField) {
+		this.numberOfDisabledPointTextField = numberOfDisabledPointTextField;
+	}
 }
