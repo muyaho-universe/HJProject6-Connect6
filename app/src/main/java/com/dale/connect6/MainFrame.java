@@ -29,6 +29,7 @@ public class MainFrame extends JFrame {
 	private JPanel infoPanel = new JPanel();
 	private JLabel infoLabel = new JLabel("Èæ");
 	Font normalFont = new Font("",Font.BOLD, 80);
+	Font winFont = new Font("",Font.BOLD, 50);
 	
 	MainFrame(){
 		super(TITLE);
@@ -123,9 +124,12 @@ public class MainFrame extends JFrame {
 				goBoard.setUsedEllipse(new  Ellipse2D.Double[19][19]);
 				goBoard.setEllipse(new Ellipse2D.Double[19][19]);
 				goBoard.setStart(false);
-				
+				goBoard.setEnabled(true);
+				goBoard.setWhiteWin(false);
+				goBoard.setBlackWin(false);
+				infoLabel.setFont(normalFont);
 				controlPanel.getStartButton().setEnabled(false);
-				
+				controlPanel.getReDoButton().setEnabled(true);
 				goBoard.repaint();
 			}
 		});
@@ -145,7 +149,23 @@ public class MainFrame extends JFrame {
 			}
 			@Override
 			public void mouseMoved(MouseEvent e) {
-				if(goBoard.isWhiteTurnFirst()) {
+				if(goBoard.isWhiteWin()) {
+					infoPanel.setBackground(Color.WHITE);
+					infoLabel.setText("¹é ½Â!");
+					infoLabel.setFont(winFont);
+					controlPanel.getReDoButton().setEnabled(false);
+					infoLabel.setForeground(Color.BLACK);
+					goBoard.setEnabled(false);
+				}
+				else if(goBoard.isBlackWin()) {
+					infoPanel.setBackground(Color.BLACK);
+					infoLabel.setText("Èæ ½Â!");
+					infoLabel.setFont(winFont);
+					controlPanel.getReDoButton().setEnabled(false);
+					infoLabel.setForeground(Color.WHITE);
+					goBoard.setEnabled(false);
+				}
+				else if(goBoard.isWhiteTurnFirst()) {
 					infoPanel.setBackground(Color.WHITE);
 					infoLabel.setText("¹é");
 					infoLabel.setForeground(Color.BLACK);
