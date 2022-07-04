@@ -51,6 +51,7 @@ public class GoBoard extends JPanel {
 				        				usedEllipse[i][j] = new Ellipse2D.Double(i*30+20, j*30+20,20, 20);
 					        			System.out.println(i+ " " + j);
 					        			if(!firstClick) {
+					        				currentColor = Color.BLACK;
 					        				MyData newData = new MyData(i, j, currentColor);
 					        				MyData.clickedPoint.add(newData);
 					        				System.out.println("firstClick " + currentColor);
@@ -60,13 +61,13 @@ public class GoBoard extends JPanel {
 					        			}
 					        			else {
 					        				if(whiteTurnFirst) {
+					        					currentColor = Color.WHITE;
 					        					if(whiteTurnSecond) {
 					        						System.out.println("whiteTurnSecond " + currentColor);
 					        						MyData newData = new MyData(i, j, currentColor);
 					        						MyData.clickedPoint.add(newData);
-					        						currentColor = Color.BLACK;
-					        						whiteTurnFirst = false;
-					        						whiteTurnSecond=false;
+					        						
+					        						whiteTurnFirst=false;
 					        						blackTurnFirst = true;
 					        					}
 					        					else {
@@ -74,23 +75,25 @@ public class GoBoard extends JPanel {
 					        						MyData newData = new MyData(i, j, currentColor);
 					        						MyData.clickedPoint.add(newData);
 					        						whiteTurnSecond = true;
+					        						blackTurnSecond = false;
 					        					}
 					        				}
 					        				else {
+					        					currentColor = Color.BLACK;
 					        					if(blackTurnSecond) {
 					        						System.out.println("blackTurnSecond " + currentColor);
 					        						MyData newData = new MyData(i, j, currentColor);
 					        						MyData.clickedPoint.add(newData);
-					        						currentColor = Color.WHITE;
+					        						
 					        						whiteTurnFirst = true;
 					        						blackTurnFirst = false;
-					        						blackTurnSecond = false;
 					        					}
 					        					else {
 					        						System.out.println("blackTurnFirst " + currentColor);
 					        						MyData newData = new MyData(i, j, currentColor);
 					        						MyData.clickedPoint.add(newData);
 					        						blackTurnSecond = true;
+					        						whiteTurnSecond = false;
 					        					}
 					        				}
 					        			}
@@ -147,11 +150,7 @@ public class GoBoard extends JPanel {
 		        		}
 		        	}
 				}
-			
-		        		
-				
 			}
-
 			@Override
 			public void mouseExited(MouseEvent e) {
 			}

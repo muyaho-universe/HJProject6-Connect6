@@ -57,8 +57,31 @@ public class MainFrame extends JFrame {
 		controlPanel.getReDoButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
+				if(goBoard.isWhiteTurnFirst()) {
+					if(goBoard.isWhiteTurnSecond()) {
+						goBoard.setWhiteTurnSecond(false);
+					}
+					else {
+						goBoard.setWhiteTurnFirst(false);
+						goBoard.setBlackTurnFirst(true);
+						goBoard.setBlackTurnSecond(true);
+					}
+				}
+				else if(goBoard.isBlackTurnFirst()) {
+					if(goBoard.isBlackTurnSecond()) {
+						goBoard.setBlackTurnSecond(false);
+					}
+					else {
+						goBoard.setWhiteTurnFirst(true);
+						goBoard.setWhiteTurnSecond(true);
+					}
+				}
 				
+				MyData data = MyData.clickedPoint.get(MyData.clickedPoint.size()-1);
+				goBoard.getUsedEllipse()[data.getX()][data.getY()] = null;
+				goBoard.getGameMatrix()[data.getX()][data.getY()] = -1;
+				MyData.clickedPoint.remove(MyData.clickedPoint.size()-1);
+				goBoard.repaint();
 			}
 		});
 		
