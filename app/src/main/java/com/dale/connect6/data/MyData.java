@@ -11,14 +11,11 @@ public class MyData {
 	private Color color;
 	
 	public static ArrayList<MyData> clickedPoint = new ArrayList<MyData>();
-	public static ArrayList<Ellipse2D> usedEllipse2D = new ArrayList<Ellipse2D>();
 	
 	public MyData(int x, int y, Color color) {
 		this.x = x;
 		this.y = y;
 		this.color = color;
-		Ellipse2D used = new Ellipse2D.Double(x*30+20, y*30+20,20, 20);
-		usedEllipse2D.add(used);
 	}
 
 	public int getX() {

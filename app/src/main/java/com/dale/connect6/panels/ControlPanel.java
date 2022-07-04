@@ -8,38 +8,90 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
 import com.dale.connect6.MainFrame;
+import com.dale.connect6.buttons.RoundButton;
 
 public class ControlPanel extends JPanel {
 	private JTextField numberOfDisabledPointTextField = new JTextField();
 	private int numberOfDisabledPoint;
-	private JButton startButton = new JButton("시작하기");
+	private RoundButton startButton = new RoundButton("시작하기", Color.GRAY);
+	private RoundButton reDoButton = new RoundButton("한 수 무르기");
+	private RoundButton restartButton = new RoundButton("새로 시작하기");
 	
-	Font normalFont = new Font("",Font.BOLD, 20);
+	Font normalFont = new Font("",Font.BOLD, 30);
 	public ControlPanel() {
-		setBounds(700, 5, 100, MainFrame.monitorHeight * 7 / 10);
-		setBackground(Color.BLACK);
+		setBounds(700, 5, 250, 400);
+//		setBackground(Color.BLACK);
 		setLayout(null);
 		createPanel();
 	}
 	
 	private void createPanel() {
-		numberOfDisabledPointTextField.setBounds(15, 15, 100, 30);
+		numberOfDisabledPointTextField.setBounds(15, 15, 210, 50);
 		numberOfDisabledPointTextField.setFont(normalFont);
 		numberOfDisabledPointTextField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e) {
 				try {
 					numberOfDisabledPoint = Integer.parseInt(numberOfDisabledPointTextField.getText());
+					if(numberOfDisabledPoint < 0 || 5 <numberOfDisabledPoint ) {
+						startButton.setColor("시작하기", Color.GRAY);
+						startButton.setEnabled(false);
+						return;
+					}
+					startButton.setColor("시작하기", new Color(61,205,91));
+					startButton.setEnabled(true);
 				}catch(Exception e1) {
-					
+					startButton.setColor("시작하기", Color.GRAY);
+					startButton.setEnabled(false);
 				}
 			}
 		});
 		
+		startButton.setEnabled(false);
 		startButton.setFont(normalFont);
-		startButton.setBounds(15, 70, 100,30);
+		startButton.setBounds(15, 220, 210, 50);
 		
+		reDoButton.setFont(normalFont);
+		reDoButton.setBounds(15, 80, 210, 50);
+		
+		restartButton.setFont(normalFont);
+		restartButton.setBounds(15, 145, 210, 50);
+		
+		this.add(restartButton);
+		this.add(reDoButton);
 		this.add(startButton);
 		this.add(numberOfDisabledPointTextField);
+	}
+
+	public int getNumberOfDisabledPoint() {
+		return numberOfDisabledPoint;
+	}
+
+	public void setNumberOfDisabledPoint(int numberOfDisabledPoint) {
+		this.numberOfDisabledPoint = numberOfDisabledPoint;
+	}
+
+	public RoundButton getStartButton() {
+		return startButton;
+	}
+
+	public void setStartButton(RoundButton startButton) {
+		this.startButton = startButton;
+	}
+
+	public RoundButton getReDoButton() {
+		return reDoButton;
+	}
+
+	public void setReDoButton(RoundButton reDoButton) {
+		this.reDoButton = reDoButton;
+	}
+
+	public RoundButton getRestartButton() {
+		return restartButton;
+	}
+
+	public void setRestartButton(RoundButton restartButton) {
+		this.restartButton = restartButton;
 	}
 }

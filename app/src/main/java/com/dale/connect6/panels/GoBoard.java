@@ -16,83 +16,118 @@ import com.dale.connect6.data.MyData;
 public class GoBoard extends JPanel {
 	Ellipse2D.Double[][] ellipse = new Ellipse2D.Double[20][20];
 	Ellipse2D.Double[][] usedEllipse = new Ellipse2D.Double[20][20];
-	Color currentColor = Color.BLACK;
+	
+	private int[][] gameMatrix = new int[19][19];
+	Color currentColor = Color.RED;
 	
 	private boolean firstClick = false;
 	private boolean whiteTurnFirst = false;
 	private boolean whiteTurnSecond = false;
 	private boolean blackTurnFirst = false;
 	private boolean blackTurnSecond = false;
+	private boolean isBlockFilled = false;
+	private boolean start = false;
+	
+	private int blockCount = 0;
+	private int blockNumber = 4;
 	
 	public GoBoard(){
 		setBounds(5, 5, 600, 600);
 		setBackground(new Color(220, 179, 92));
+		for(int i=0; i<=18; i++) {
+        	for(int j=0; j<=18; j++) {
+        		gameMatrix[i][j] = -1;
+        	}
+		}
 		this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				
-				for(int i=0; i<=18; i++) {
-		        	for(int j=0; j<=18; j++) {
-		        		if(usedEllipse[i][j] == null || !usedEllipse[i][j].contains(e.getPoint())) {
-		        			
-		        			if(ellipse[i][j].contains(e.getPoint())) {
-		        				usedEllipse[i][j] = new Ellipse2D.Double(i*30+20, j*30+20,20, 20);
-			        			System.out.println(i+ " " + j);
-			        			if(!firstClick) {
-			        				MyData newData = new MyData(i, j, currentColor);
-			        				currentColor = Color.WHITE;
-			        				MyData.clickedPoint.add(newData);
-			        				System.out.println("firstClick " + currentColor);
-			        				whiteTurnFirst = true;
-			        				firstClick =true;
-			        			}
-			        			
-			        			else {
-			        				if(whiteTurnFirst) {
-			        					if(whiteTurnSecond) {
-			        						System.out.println("whiteTurnSecond " + currentColor);
-			        						MyData newData = new MyData(i, j, currentColor);
-			        						MyData.clickedPoint.add(newData);
-			        						currentColor = Color.BLACK;
-			        						whiteTurnFirst = false;
-			        						whiteTurnSecond=false;
-			        						blackTurnFirst = true;
-			        						
-			        					}
-			        					else {
-			        						System.out.println("whiteTurnFirst " + currentColor);
-			        						MyData newData = new MyData(i, j, currentColor);
-			        						MyData.clickedPoint.add(newData);
-			        						whiteTurnSecond = true;
-			        					}
-			        				}
-			        				else {
-			        					if(blackTurnSecond) {
-			        						System.out.println("blackTurnSecond " + currentColor);
-			        						MyData newData = new MyData(i, j, currentColor);
-			        						MyData.clickedPoint.add(newData);
-			        						currentColor = Color.WHITE;
-			        						whiteTurnFirst = true;
-			        						blackTurnFirst = false;
-			        						blackTurnSecond = false;
-			        					}
-			        					else {
-			        						System.out.println("blackTurnFirst " + currentColor);
-			        						MyData newData = new MyData(i, j, currentColor);
-			        						MyData.clickedPoint.add(newData);
-			        						blackTurnSecond = true;
-			        					}
-			        				}
-			        			}
-			        			repaint();
+				if(start) {
+					for(int i=0; i<=18; i++) {
+			        	for(int j=0; j<=18; j++) {
+			        		if(isBlockFilled) {
+			        			if(usedEllipse[i][j] == null || !usedEllipse[i][j].contains(e.getPoint())) {
+				        			if(ellipse[i][j].contains(e.getPoint())) {
+				        				usedEllipse[i][j] = new Ellipse2D.Double(i*30+20, j*30+20,20, 20);
+					        			System.out.println(i+ " " + j);
+					        			if(!firstClick) {
+					        				MyData newData = new MyData(i, j, currentColor);
+					        				MyData.clickedPoint.add(newData);
+					        				System.out.println("firstClick " + currentColor);
+					        				currentColor = Color.WHITE;
+					        				whiteTurnFirst = true;
+					        				firstClick =true;
+					        			}
+					        			else {
+					        				if(whiteTurnFirst) {
+					        					if(whiteTurnSecond) {
+					        						System.out.println("whiteTurnSecond " + currentColor);
+					        						MyData newData = new MyData(i, j, currentColor);
+					        						MyData.clickedPoint.add(newData);
+					        						currentColor = Color.BLACK;
+					        						whiteTurnFirst = false;
+					        						whiteTurnSecond=false;
+					        						blackTurnFirst = true;
+					        					}
+					        					else {
+					        						System.out.println("whiteTurnFirst " + currentColor);
+					        						MyData newData = new MyData(i, j, currentColor);
+					        						MyData.clickedPoint.add(newData);
+					        						whiteTurnSecond = true;
+					        					}
+					        				}
+					        				else {
+					        					if(blackTurnSecond) {
+					        						System.out.println("blackTurnSecond " + currentColor);
+					        						MyData newData = new MyData(i, j, currentColor);
+					        						MyData.clickedPoint.add(newData);
+					        						currentColor = Color.WHITE;
+					        						whiteTurnFirst = true;
+					        						blackTurnFirst = false;
+					        						blackTurnSecond = false;
+					        					}
+					        					else {
+					        						System.out.println("blackTurnFirst " + currentColor);
+					        						MyData newData = new MyData(i, j, currentColor);
+					        						MyData.clickedPoint.add(newData);
+					        						blackTurnSecond = true;
+					        					}
+					        				}
+					        			}
+					        			repaint();
+					        		}
+				        		}
+				        		else {
+				        			System.out.println("Already Taken");
+				        		}
 			        		}
-		        		}
-		        		else {
-		        			System.out.println("Already Taken");
-		        		}
-		        		
-		        	}
-		        }
+			        		else {
+			        			if(usedEllipse[i][j] == null || !usedEllipse[i][j].contains(e.getPoint())) {
+				        			if(ellipse[i][j].contains(e.getPoint())) {
+//				        				gameMatrix[i][j] = 
+				        				usedEllipse[i][j] = new Ellipse2D.Double(i*30+20, j*30+20,20, 20);
+					        			System.out.println(i+ " " + j);
+				        				MyData newData = new MyData(i, j, currentColor);
+				        				
+				        				MyData.clickedPoint.add(newData);
+				        				System.out.println("firstClick " + currentColor);
+				        				blockCount++;
+				        				if(blockCount == blockNumber) {
+				        					isBlockFilled = true;
+				        					currentColor = Color.BLACK;
+				        				}
+				        				
+				        				repaint();
+				        			}
+			        			}
+			        		}
+			        		
+			        	}
+			        }
+				}
+				else {
+					System.out.println("Press start");
+				}
 			}
 
 			@Override
@@ -150,6 +185,110 @@ public class GoBoard extends JPanel {
         	}
         	
         }
+	}
+
+	public boolean isStart() {
+		return start;
+	}
+
+	public void setStart(boolean start) {
+		this.start = start;
+	}
+
+	public int getBlockNumber() {
+		return blockNumber;
+	}
+
+	public void setBlockNumber(int blockNumber) {
+		this.blockNumber = blockNumber;
+	}
+
+	public Ellipse2D.Double[][] getEllipse() {
+		return ellipse;
+	}
+
+	public void setEllipse(Ellipse2D.Double[][] ellipse) {
+		this.ellipse = ellipse;
+	}
+
+	public Ellipse2D.Double[][] getUsedEllipse() {
+		return usedEllipse;
+	}
+
+	public void setUsedEllipse(Ellipse2D.Double[][] usedEllipse) {
+		this.usedEllipse = usedEllipse;
+	}
+
+	public int[][] getGameMatrix() {
+		return gameMatrix;
+	}
+
+	public void setGameMatrix(int[][] gameMatrix) {
+		this.gameMatrix = gameMatrix;
+	}
+
+	public Color getCurrentColor() {
+		return currentColor;
+	}
+
+	public void setCurrentColor(Color currentColor) {
+		this.currentColor = currentColor;
+	}
+
+	public boolean isFirstClick() {
+		return firstClick;
+	}
+
+	public void setFirstClick(boolean firstClick) {
+		this.firstClick = firstClick;
+	}
+
+	public boolean isWhiteTurnFirst() {
+		return whiteTurnFirst;
+	}
+
+	public void setWhiteTurnFirst(boolean whiteTurnFirst) {
+		this.whiteTurnFirst = whiteTurnFirst;
+	}
+
+	public boolean isWhiteTurnSecond() {
+		return whiteTurnSecond;
+	}
+
+	public void setWhiteTurnSecond(boolean whiteTurnSecond) {
+		this.whiteTurnSecond = whiteTurnSecond;
+	}
+
+	public boolean isBlackTurnFirst() {
+		return blackTurnFirst;
+	}
+
+	public void setBlackTurnFirst(boolean blackTurnFirst) {
+		this.blackTurnFirst = blackTurnFirst;
+	}
+
+	public boolean isBlackTurnSecond() {
+		return blackTurnSecond;
+	}
+
+	public void setBlackTurnSecond(boolean blackTurnSecond) {
+		this.blackTurnSecond = blackTurnSecond;
+	}
+
+	public boolean isBlockFilled() {
+		return isBlockFilled;
+	}
+
+	public void setBlockFilled(boolean isBlockFilled) {
+		this.isBlockFilled = isBlockFilled;
+	}
+
+	public int getBlockCount() {
+		return blockCount;
+	}
+
+	public void setBlockCount(int blockCount) {
+		this.blockCount = blockCount;
 	}
 	
 	
