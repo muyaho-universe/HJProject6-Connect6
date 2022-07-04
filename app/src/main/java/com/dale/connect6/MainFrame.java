@@ -1,10 +1,14 @@
 package com.dale.connect6;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.geom.Ellipse2D;
 
 import javax.swing.*;
@@ -21,6 +25,9 @@ public class MainFrame extends JFrame {
 	private GoBoard goBoard;
 	private ControlPanel controlPanel;
 	private JPanel mainPanel = new JPanel();
+	private JPanel infoPanel = new JPanel();
+	private JLabel infoLabel = new JLabel("Èæ");
+	Font normalFont = new Font("",Font.BOLD, 80);
 	
 	MainFrame(){
 		super(TITLE);
@@ -111,6 +118,37 @@ public class MainFrame extends JFrame {
 				goBoard.repaint();
 			}
 		});
+		
+		infoPanel.setBackground(Color.BLACK);
+		infoPanel.setBounds(700, 350, 250, 250);
+		infoPanel.setLayout(null);
+		infoLabel.setFont(normalFont);
+		infoLabel.setForeground(Color.WHITE);
+		infoLabel.setBounds(85, 40, 165, 165);
+		infoPanel.add(infoLabel);
+		goBoard.addMouseMotionListener(new MouseMotionListener() {
+			@Override
+			public void mouseDragged(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			@Override
+			public void mouseMoved(MouseEvent e) {
+				if(goBoard.isWhiteTurnFirst()) {
+					infoPanel.setBackground(Color.WHITE);
+					infoLabel.setText("¹é");
+					infoLabel.setForeground(Color.BLACK);
+				}
+				else if(goBoard.isBlackTurnFirst()) {
+					infoPanel.setBackground(Color.BLACK);
+					infoLabel.setText("Èæ");
+					infoLabel.setForeground(Color.WHITE);
+				}
+			}
+		});
+		
+		
+		this.add(infoPanel);
 		this.add(controlPanel);
 		this.add(goBoard);
 		this.setVisible(true);

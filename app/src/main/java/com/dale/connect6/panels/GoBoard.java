@@ -61,6 +61,7 @@ public class GoBoard extends JPanel {
 					        			}
 					        			else {
 					        				if(whiteTurnFirst) {
+					        					gameMatrix[i][j] = 1;
 					        					currentColor = Color.WHITE;
 					        					if(whiteTurnSecond) {
 					        						System.out.println("whiteTurnSecond " + currentColor);
@@ -80,6 +81,7 @@ public class GoBoard extends JPanel {
 					        				}
 					        				else {
 					        					currentColor = Color.BLACK;
+					        					gameMatrix[i][j] = 1;
 					        					if(blackTurnSecond) {
 					        						System.out.println("blackTurnSecond " + currentColor);
 					        						MyData newData = new MyData(i, j, currentColor);
@@ -91,6 +93,7 @@ public class GoBoard extends JPanel {
 					        					else {
 					        						System.out.println("blackTurnFirst " + currentColor);
 					        						MyData newData = new MyData(i, j, currentColor);
+					        						
 					        						MyData.clickedPoint.add(newData);
 					        						blackTurnSecond = true;
 					        						whiteTurnSecond = false;
@@ -107,7 +110,7 @@ public class GoBoard extends JPanel {
 			        		else {
 			        			if(usedEllipse[i][j] == null || !usedEllipse[i][j].contains(e.getPoint())) {
 				        			if(ellipse[i][j].contains(e.getPoint())) {
-//				        				gameMatrix[i][j] = 
+				        				gameMatrix[i][j] = 0;
 				        				usedEllipse[i][j] = new Ellipse2D.Double(i*30+20, j*30+20,20, 20);
 					        			System.out.println(i+ " " + j);
 				        				MyData newData = new MyData(i, j, currentColor);
