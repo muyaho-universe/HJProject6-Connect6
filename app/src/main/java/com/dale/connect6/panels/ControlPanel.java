@@ -20,7 +20,6 @@ public class ControlPanel extends JPanel {
 	Font normalFont = new Font("",Font.BOLD, 30);
 	public ControlPanel() {
 		setBounds(700, 5, 250, 400);
-//		setBackground(Color.BLACK);
 		setLayout(null);
 		createPanel();
 	}

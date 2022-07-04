@@ -1,6 +1,7 @@
 package com.dale.connect6.panels;
 
 import java.awt.BasicStroke;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -8,6 +9,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
 
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import com.dale.connect6.MainFrame;
@@ -27,16 +30,21 @@ public class GoBoard extends JPanel {
 	private boolean blackTurnSecond = false;
 	private boolean isBlockFilled = false;
 	private boolean start = false;
+	private boolean whiteWin = false;
+	private boolean blackWin = false;
 	
 	private int blockCount = 0;
 	private int blockNumber = 4;
+	
+	private int x = -1;
+	private int y = -1;
 	
 	public GoBoard(){
 		setBounds(5, 5, 600, 600);
 		setBackground(new Color(220, 179, 92));
 		for(int i=0; i<=18; i++) {
         	for(int j=0; j<=18; j++) {
-        		gameMatrix[i][j] = -1;
+        		gameMatrix[i][j] = 0;
         	}
 		}
 		this.addMouseListener(new MouseListener() {
@@ -58,21 +66,21 @@ public class GoBoard extends JPanel {
 					        				currentColor = Color.WHITE;
 					        				whiteTurnFirst = true;
 					        				firstClick =true;
+					        				gameMatrix[i][j] = 1;
 					        			}
 					        			else {
 					        				if(whiteTurnFirst) {
-					        					gameMatrix[i][j] = 1;
+					        					x = i;
+					        					y = j;
+					        					gameMatrix[i][j] = 2;
 					        					currentColor = Color.WHITE;
 					        					if(whiteTurnSecond) {
-					        						System.out.println("whiteTurnSecond " + currentColor);
 					        						MyData newData = new MyData(i, j, currentColor);
 					        						MyData.clickedPoint.add(newData);
-					        						
 					        						whiteTurnFirst=false;
 					        						blackTurnFirst = true;
 					        					}
 					        					else {
-					        						System.out.println("whiteTurnFirst " + currentColor);
 					        						MyData newData = new MyData(i, j, currentColor);
 					        						MyData.clickedPoint.add(newData);
 					        						whiteTurnSecond = true;
@@ -80,10 +88,11 @@ public class GoBoard extends JPanel {
 					        					}
 					        				}
 					        				else {
+					        					x = i;
+					        					y = j;
 					        					currentColor = Color.BLACK;
 					        					gameMatrix[i][j] = 1;
 					        					if(blackTurnSecond) {
-					        						System.out.println("blackTurnSecond " + currentColor);
 					        						MyData newData = new MyData(i, j, currentColor);
 					        						MyData.clickedPoint.add(newData);
 					        						
@@ -91,7 +100,6 @@ public class GoBoard extends JPanel {
 					        						blackTurnFirst = false;
 					        					}
 					        					else {
-					        						System.out.println("blackTurnFirst " + currentColor);
 					        						MyData newData = new MyData(i, j, currentColor);
 					        						
 					        						MyData.clickedPoint.add(newData);
@@ -101,6 +109,20 @@ public class GoBoard extends JPanel {
 					        				}
 					        			}
 					        			repaint();
+					        			int result = -1;
+				        				try {
+				        					result = checkFinishGo(x,y);
+				        				}catch (Exception e1) {
+				        				}
+				        				System.out.println(result);
+				        				if(result==1) {
+				        					System.out.println("Èæ ½Â¸®");
+				        					blackWin= true;
+				        				}
+				        				else if (result==2) {
+				        					System.out.println("¹é ½Â¸®");
+				        					whiteWin= true;
+				        				}
 					        		}
 				        		}
 				        		else {
@@ -108,20 +130,22 @@ public class GoBoard extends JPanel {
 				        		}
 			        		}
 			        		else {
+			        			if(blockCount == blockNumber) {
+		        					isBlockFilled = true;
+		        					currentColor = Color.BLACK;
+		        					return;
+		        				}
 			        			if(usedEllipse[i][j] == null || !usedEllipse[i][j].contains(e.getPoint())) {
 				        			if(ellipse[i][j].contains(e.getPoint())) {
-				        				gameMatrix[i][j] = 0;
+				        				
+				        				gameMatrix[i][j] = 3;
+				        				
 				        				usedEllipse[i][j] = new Ellipse2D.Double(i*30+20, j*30+20,20, 20);
 					        			System.out.println(i+ " " + j);
 				        				MyData newData = new MyData(i, j, currentColor);
 				        				
 				        				MyData.clickedPoint.add(newData);
-				        				System.out.println("firstClick " + currentColor);
 				        				blockCount++;
-				        				if(blockCount == blockNumber) {
-				        					isBlockFilled = true;
-				        					currentColor = Color.BLACK;
-				        				}
 				        				
 				        				repaint();
 				        			}
@@ -138,6 +162,26 @@ public class GoBoard extends JPanel {
 
 			@Override
 			public void mousePressed(MouseEvent e) {
+				if(start) {
+					for(int i=0; i<=18; i++) {
+			        	for(int j=0; j<=18; j++) {
+			        		if(isBlockFilled) {
+			        			if(usedEllipse[i][j] == null || !usedEllipse[i][j].contains(e.getPoint())) {
+				        			if(ellipse[i][j].contains(e.getPoint())) {
+				        				if(whiteTurnFirst) {
+				        					x = i;
+				        					y = j;
+				        				}
+				        				if(whiteTurnFirst){
+				        					x = i;
+				        					y = j;
+				        				}
+				        			}
+			        			}
+			        		}
+			        	}
+					}
+				}       			
 			}
 
 			@Override
@@ -146,13 +190,6 @@ public class GoBoard extends JPanel {
 			}
 			@Override
 			public void mouseEntered(MouseEvent e) {
-				for(int i=0; i<=18; i++) {
-		        	for(int j=0; j<=18; j++) {
-		        		if(ellipse[i][j].contains(e.getPoint())) {
-		        			System.out.println(i+ " " + j);
-		        		}
-		        	}
-				}
 			}
 			@Override
 			public void mouseExited(MouseEvent e) {
@@ -187,6 +224,168 @@ public class GoBoard extends JPanel {
         	}
         	
         }
+	}
+	
+	public int checkFinishGo(int x, int y) {
+
+		if(checkHorizontal(x, y, gameMatrix[x][y]) >= 6) {
+			return gameMatrix[x][y];
+		}
+		else if(checkVertical(x, y, gameMatrix[x][y]) >= 6) {
+			return gameMatrix[x][y];
+		}
+		else if(checkLRDiagonal(x, y, gameMatrix[x][y]) >= 6) {
+			return gameMatrix[x][y];
+		}
+		else if(checkRLDiagonal(x, y, gameMatrix[x][y]) >= 6) {
+			return gameMatrix[x][y];
+		}
+
+		return 0;
+	}
+
+	private int checkHorizontal(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return checkLeft(row - 1, col, rock) + 1 + checkRight(row + 1, col, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkLeft(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return 1 + checkLeft(row - 1, col, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkRight(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return 1 + checkRight(row + 1, col, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkVertical(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return checkUp(row, col - 1, rock) + 1 + checkDown(row, col + 1, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkUp(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return 1 + checkUp(row, col - 1, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkDown(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return 1 + checkDown(row, col + 1, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkLRDiagonal(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return checkLRDiagonalUp(row - 1, col - 1, rock) + 1 + checkLRDiagonalDown(row + 1, col + 1, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkLRDiagonalUp(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return 1 + checkLRDiagonalUp(row - 1, col - 1, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkLRDiagonalDown(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return 1 + checkLRDiagonalDown(row + 1, col + 1, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+
+	private int checkRLDiagonal(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return checkRLDiagonalUp(row + 1, col - 1, rock) + 1 + checkRLDiagonalDown(row - 1, col + 1, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkRLDiagonalUp(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return 1 + checkRLDiagonalUp(row + 1, col - 1, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
+	}
+	
+	private int checkRLDiagonalDown(int row, int col, int rock) {
+		try {
+			if (gameMatrix[row][col] != rock)
+				return 0;
+			else {
+				return 1 + checkRLDiagonalDown(row - 1, col + 1, rock);
+			}
+		} catch (ArrayIndexOutOfBoundsException e) {
+			return 0;
+		}
 	}
 
 	public boolean isStart() {
@@ -291,6 +490,38 @@ public class GoBoard extends JPanel {
 
 	public void setBlockCount(int blockCount) {
 		this.blockCount = blockCount;
+	}
+
+	public int getX() {
+		return x;
+	}
+
+	public void setX(int x) {
+		this.x = x;
+	}
+
+	public int getY() {
+		return y;
+	}
+
+	public void setY(int y) {
+		this.y = y;
+	}
+
+	public boolean isWhiteWin() {
+		return whiteWin;
+	}
+
+	public void setWhiteWin(boolean whiteWin) {
+		this.whiteWin = whiteWin;
+	}
+
+	public boolean isBlackWin() {
+		return blackWin;
+	}
+
+	public void setBlackWin(boolean blackWin) {
+		this.blackWin = blackWin;
 	}
 	
 	
