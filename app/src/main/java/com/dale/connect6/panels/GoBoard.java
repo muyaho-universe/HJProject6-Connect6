@@ -141,7 +141,6 @@ public class GoBoard extends JPanel {
 					        				} catch(Exception e1) {
 					        					e1.printStackTrace();
 					        				}
-				        					System.out.println("Èæ ½Â¸®");
 				        					blackWin= true;
 				        				}
 				        				else if (result==2) {
@@ -155,7 +154,6 @@ public class GoBoard extends JPanel {
 					        				} catch(Exception e1) {
 					        					e1.printStackTrace();
 					        				}
-				        					System.out.println("¹é ½Â¸®");
 				        					whiteWin= true;
 				        				}
 					        		}
@@ -234,7 +232,7 @@ public class GoBoard extends JPanel {
 	
 	@Override
 	public void paintComponent(Graphics g){
-	    super.paintComponent(g); // ºÎ¸ð ÆäÀÎÆ®È£Ãâ
+	    super.paintComponent(g);
 	    Graphics2D g2d = (Graphics2D) g.create();
 	    Graphics2D g2Point = (Graphics2D) g.create();
         g2d.setColor(Color.BLACK);

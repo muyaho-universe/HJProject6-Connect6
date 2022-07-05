@@ -13,9 +13,9 @@ import com.dale.connect6.buttons.RoundButton;
 public class ControlPanel extends JPanel {
 	private JTextField numberOfDisabledPointTextField = new JTextField();
 	private int numberOfDisabledPoint;
-	private RoundButton startButton = new RoundButton("시작하기", Color.GRAY);
-	private RoundButton reDoButton = new RoundButton("한 수 무르기");
-	private RoundButton restartButton = new RoundButton("새로 시작하기");
+	private RoundButton startButton = new RoundButton("Start", Color.GRAY);
+	private RoundButton reDoButton = new RoundButton("Undo");
+	private RoundButton restartButton = new RoundButton("New Game");
 	
 	Font normalFont = new Font("",Font.BOLD, 30);
 	public ControlPanel() {
@@ -33,14 +33,14 @@ public class ControlPanel extends JPanel {
 				try {
 					numberOfDisabledPoint = Integer.parseInt(numberOfDisabledPointTextField.getText());
 					if(numberOfDisabledPoint < 0 || 5 <numberOfDisabledPoint ) {
-						startButton.setColor("시작하기", Color.GRAY);
+						startButton.setColor("Start", Color.GRAY);
 						startButton.setEnabled(false);
 						return;
 					}
-					startButton.setColor("시작하기", new Color(61,205,91));
+					startButton.setColor("Start", new Color(61,205,91));
 					startButton.setEnabled(true);
 				}catch(Exception e1) {
-					startButton.setColor("시작하기", Color.GRAY);
+					startButton.setColor("Start", Color.GRAY);
 					startButton.setEnabled(false);
 				}
 			}

@@ -27,7 +27,7 @@ public class MainFrame extends JFrame {
 	private ControlPanel controlPanel;
 	private JPanel mainPanel = new JPanel();
 	private JPanel infoPanel = new JPanel();
-	private JLabel infoLabel = new JLabel("Èæ");
+	private JLabel infoLabel = new JLabel("Black");
 	Font normalFont = new Font("",Font.BOLD, 80);
 	Font winFont = new Font("",Font.BOLD, 50);
 	
@@ -109,7 +109,7 @@ public class MainFrame extends JFrame {
 				
 				infoPanel.setBackground(Color.BLACK);
 				infoLabel.setForeground(Color.WHITE);
-				infoLabel.setText("Èæ");
+				infoLabel.setText("BLACK");
 				
 				goBoard.setBlackTurnFirst(false);
 				goBoard.setFirstClick(false);
@@ -151,7 +151,7 @@ public class MainFrame extends JFrame {
 			public void mouseMoved(MouseEvent e) {
 				if(goBoard.isWhiteWin()) {
 					infoPanel.setBackground(Color.WHITE);
-					infoLabel.setText("¹é ½Â!");
+					infoLabel.setText("White Win!");
 					infoLabel.setFont(winFont);
 					controlPanel.getReDoButton().setEnabled(false);
 					infoLabel.setForeground(Color.BLACK);
@@ -160,7 +160,7 @@ public class MainFrame extends JFrame {
 				}
 				else if(goBoard.isBlackWin()) {
 					infoPanel.setBackground(Color.BLACK);
-					infoLabel.setText("Èæ ½Â!");
+					infoLabel.setText("Black Win!");
 					infoLabel.setFont(winFont);
 					controlPanel.getReDoButton().setEnabled(false);
 					infoLabel.setForeground(Color.WHITE);
@@ -168,12 +168,12 @@ public class MainFrame extends JFrame {
 				}
 				else if(goBoard.isWhiteTurnFirst()) {
 					infoPanel.setBackground(Color.WHITE);
-					infoLabel.setText("¹é");
+					infoLabel.setText("White");
 					infoLabel.setForeground(Color.BLACK);
 				}
 				else if(goBoard.isBlackTurnFirst()) {
 					infoPanel.setBackground(Color.BLACK);
-					infoLabel.setText("Èæ");
+					infoLabel.setText("Black");
 					infoLabel.setForeground(Color.WHITE);
 				}
 			}
