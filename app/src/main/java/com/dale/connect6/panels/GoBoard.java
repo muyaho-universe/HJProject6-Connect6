@@ -8,7 +8,11 @@ import java.awt.Graphics2D;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Ellipse2D;
+import java.io.File;
 
+import javax.sound.sampled.AudioInputStream;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Clip;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -57,6 +61,17 @@ public class GoBoard extends JPanel {
 			        			if(usedEllipse[i][j] == null || !usedEllipse[i][j].contains(e.getPoint())) {
 				        			if(ellipse[i][j].contains(e.getPoint())) {
 				        				usedEllipse[i][j] = new Ellipse2D.Double(i*30+20, j*30+20,20, 20);
+				        				try {
+				        					AudioInputStream audio = AudioSystem.getAudioInputStream(new File("./assets/MP_Button.wav"));
+				        					Clip clip = AudioSystem.getClip();
+				        					clip.stop();
+				        					clip.open(audio);
+				        					clip.start();
+				        				
+				        				} catch(Exception e1) {
+				        					e1.printStackTrace();
+				        				}
+				        				
 					        			System.out.println(i+ " " + j);
 					        			if(!firstClick) {
 					        				currentColor = Color.BLACK;
@@ -116,10 +131,30 @@ public class GoBoard extends JPanel {
 				        				}
 				        				System.out.println(result);
 				        				if(result==1) {
+				        					try {
+					        					AudioInputStream audio = AudioSystem.getAudioInputStream(new File("./assets/MP_5 Sec_Crowd_Cheer.wav"));
+					        					Clip clip = AudioSystem.getClip();
+					        					clip.stop();
+					        					clip.open(audio);
+					        					clip.start();
+					        				
+					        				} catch(Exception e1) {
+					        					e1.printStackTrace();
+					        				}
 				        					System.out.println("Èæ ½Â¸®");
 				        					blackWin= true;
 				        				}
 				        				else if (result==2) {
+				        					try {
+					        					AudioInputStream audio = AudioSystem.getAudioInputStream(new File("./assets/MP_5 Sec_Crowd_Cheer.wav"));
+					        					Clip clip = AudioSystem.getClip();
+					        					clip.stop();
+					        					clip.open(audio);
+					        					clip.start();
+					        				
+					        				} catch(Exception e1) {
+					        					e1.printStackTrace();
+					        				}
 				        					System.out.println("¹é ½Â¸®");
 				        					whiteWin= true;
 				        				}

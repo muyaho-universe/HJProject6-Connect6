@@ -156,6 +156,7 @@ public class MainFrame extends JFrame {
 					controlPanel.getReDoButton().setEnabled(false);
 					infoLabel.setForeground(Color.BLACK);
 					goBoard.setEnabled(false);
+					
 				}
 				else if(goBoard.isBlackWin()) {
 					infoPanel.setBackground(Color.BLACK);
